@@ -746,7 +746,7 @@ function Experience() {
     'Yüksek hacimli gerçek zamanlı işleme için Kafka, RabbitMQ ve Redis kullanan olay güdümlü dağıtık sistemler kuruyorum.',
     'Jenkins, Maven, Gradle ve OpenShift ile CI/CD pipeline\'ları uygulayarak konteyner tabanlı dağıtımları yönetiyorum.',
     'Spring Security, OAuth2, JWT ve SSO tabanlı kimlik doğrulama & yetkilendirme mekanizmalarını entegre ediyorum.',
-    'Java, .NET/C#, Python ve Go servisleri arasında hibrit sistem entegrasyonlarına liderlik ediyor; çapraz platform iletişimini sağlıyorum.',
+    'Java, .NET/C# ve Python servisleri arasında entegrasyon geliştiriyorum; REST ve mesaj kuyrukları üzerinden farklı sistemlerin haberleşmesini sağlıyorum.',
   ];
   return (
     <section className="section" id="experience">
@@ -801,11 +801,15 @@ function TechStack() {
     { logo:`${SI}/apachekafka/ffffff`,                             name:'Kafka',           level:'professional', lbl:'Professional' },
     { logo:`${DI}/rabbitmq/rabbitmq-original.svg`,                 name:'RabbitMQ',        level:'professional', lbl:'Professional' },
     { logo:`${DI}/redis/redis-original.svg`,                       name:'Redis',           level:'professional', lbl:'Professional' },
+    { logo:`${DI}/kotlin/kotlin-original.svg`,                     name:'Kotlin',          level:'professional', lbl:'Professional' },
+    { logo:`${DI}/csharp/csharp-original.svg`,                     name:'C# / .NET',       level:'professional', lbl:'Professional' },
+    { logo:`${DI}/oracle/oracle-original.svg`,                     name:'PL/SQL',          level:'professional', lbl:'Professional' },
     { logo:`${DI}/spring/spring-original.svg`,                     name:'Spring Security', level:'professional', lbl:'Professional', badge:'🔒' },
     { logo:`${SI}/jsonwebtokens/F7B500`,                           name:'OAuth2 / JWT',    level:'professional', lbl:'Professional' },
     { logo:`${SI}/redhatopenshift/EE0000`,                         name:'OpenShift',       level:'professional', lbl:'Professional' },
     { logo:`${DI}/jenkins/jenkins-original.svg`,                   name:'Jenkins',         level:'professional', lbl:'Professional' },
-    { logo:`${DI}/maven/maven-original.svg`,                       name:'Maven / Gradle',  level:'professional', lbl:'Professional' },
+    { logo:`${DI}/maven/maven-original.svg`,                       name:'Maven',           level:'professional', lbl:'Professional' },
+    { logo:`${SI}/gradle/02303A`,                                  name:'Gradle',          level:'professional', lbl:'Professional' },
   ];
   const [ref, visible] = useStaggerReveal(techs.length);
   return (
