@@ -15,23 +15,45 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:      #07090f;
-      --bg2:     #0c0f1a;
-      --surface: #111827;
-      --surface2:#1a2234;
-      --border:  rgba(255,255,255,0.07);
-      --accent:  #4f8ef7;
-      --accent2: #06b6d4;
-      --green:   #22d3a5;
-      --glow:    rgba(79,142,247,0.3);
-      --text:    #e2e8f0;
-      --muted:   #64748b;
-      --white:   #ffffff;
-      --radius:  14px;
-      --ease:    cubic-bezier(0.4,0,0.2,1);
+      --bg:              #07090f;
+      --bg2:             #0c0f1a;
+      --surface:         #111827;
+      --surface2:        #1a2234;
+      --border:          rgba(255,255,255,0.07);
+      --accent:          #4f8ef7;
+      --accent2:         #06b6d4;
+      --green:           #22d3a5;
+      --glow:            rgba(79,142,247,0.3);
+      --text:            #e2e8f0;
+      --muted:           #64748b;
+      --white:           #ffffff;
+      --radius:          14px;
+      --ease:            cubic-bezier(0.4,0,0.2,1);
+      --nav-scrolled-bg: rgba(7,9,15,0.88);
+      --overlay-bg:      rgba(7,9,15,0.97);
+    }
+    [data-theme="light"] {
+      --bg:              #f0f4f8;
+      --bg2:             #e8edf5;
+      --surface:         #ffffff;
+      --surface2:        #f1f5f9;
+      --border:          rgba(15,23,42,0.1);
+      --accent:          #2563eb;
+      --accent2:         #0891b2;
+      --green:           #059669;
+      --glow:            rgba(37,99,235,0.2);
+      --text:            #334155;
+      --muted:           #64748b;
+      --white:           #0f172a;
+      --nav-scrolled-bg: rgba(240,244,248,0.92);
+      --overlay-bg:      rgba(240,244,248,0.97);
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    body {
+      font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.6; overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
@@ -63,7 +85,7 @@
       border-bottom: 1px solid transparent;
     }
     .nav--scrolled {
-      background: rgba(7,9,15,0.88);
+      background: var(--nav-scrolled-bg);
       backdrop-filter: blur(22px);
       border-bottom-color: var(--border);
     }
@@ -84,7 +106,7 @@
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .mobile-overlay {
       position: fixed; inset: 0; z-index: 999;
-      background: rgba(7,9,15,0.97); backdrop-filter: blur(24px);
+      background: var(--overlay-bg); backdrop-filter: blur(24px);
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
       transform: translateX(100%); transition: transform 0.35s var(--ease);
     }
@@ -117,7 +139,16 @@
     .btn--primary { background: var(--accent); color: #fff; box-shadow: 0 0 35px var(--glow); }
     .btn--primary:hover { background: #3b7ef0; transform: translateY(-2px); box-shadow: 0 0 50px var(--glow); }
     .btn--ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .btn--ghost:hover { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
+    .btn--ghost:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-2px); }
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.25s var(--ease); flex-shrink: 0;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: var(--surface2); }
     .hero__stats { display: flex; gap: 3rem; margin-top: 0; padding-top: 2rem; border-top: 1px solid var(--border); }
     .stat__num { font-size: 2rem; font-weight: 900; color: var(--white); line-height: 1; }
     .stat__label { font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
@@ -322,6 +353,107 @@
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
 
+/* ── GitHub Pages 404 redirect handler ── */
+(function() {
+  const redirect = sessionStorage.getItem('ghpages_redirect');
+  if (redirect) {
+    sessionStorage.removeItem('ghpages_redirect');
+    window.history.replaceState(null, '', redirect);
+  }
+})();
+
+/* ── Theme hook ── */
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  /* Sistem teması değişince (localStorage'da manuel seçim yoksa) güncelle */
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e) => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+  return [theme, toggle];
+}
+
+/* ── Router — History API, no # ── */
+const ROUTES = {
+  hero:         '/',
+  about:        '/hakkimda',
+  experience:   '/deneyim',
+  stack:        '/teknolojiler',
+  strengths:    '/yetkinlikler',
+  education:    '/egitim',
+  certificates: '/sertifikalar',
+  contact:      '/iletisim',
+};
+const ROUTE_TO_ID = Object.fromEntries(Object.entries(ROUTES).map(([id, path]) => [path, id]));
+
+function navigate(sectionId) {
+  /* Scroll — window.scrollTo avoids the overflow-x:hidden smooth-scroll bug */
+  const el = document.getElementById(sectionId);
+  if (el) {
+    const top = el.getBoundingClientRect().top + window.scrollY - 68;
+    (document.scrollingElement || window).scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+  /* URL update — secondary, fail silently */
+  try {
+    const path = ROUTES[sectionId] || '/';
+    window.history.pushState(null, '', path);
+  } catch (_) {}
+}
+
+function useScrollRouter() {
+  useEffect(() => {
+    /* On load: scroll to section matching current URL */
+    const initId = ROUTE_TO_ID[window.location.pathname];
+    if (initId && initId !== 'hero') {
+      setTimeout(() => {
+        document.getElementById(initId)?.scrollIntoView({ behavior: 'auto' });
+      }, 300);
+    }
+
+    /* Update URL on scroll — simple getBoundingClientRect approach */
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        let current = 'hero';
+        for (const id of Object.keys(ROUTES)) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= 120) current = id;
+        }
+        try {
+          const newPath = ROUTES[current] || '/';
+          if (window.location.pathname !== newPath) {
+            window.history.replaceState(null, '', newPath);
+          }
+        } catch (_) {}
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+}
+
 /* ── Mailto with pre-filled subject & witty body ── */
 const MAILTO_URL = `mailto:ibrahimbayramli@outlook.com?subject=${
   encodeURIComponent('Merhaba İbrahim, seninle tanışmak istiyorum 🚀')
@@ -344,6 +476,20 @@ Saygılarımla,
 const LINKEDIN_URL = 'https://www.linkedin.com/in/ibrahimbayramli';
 
 /* ── SVG Icons ─────────────────────────────── */
+const IconSun = () => (
+  <svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+);
+const IconMoon = () => (
+  <svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+);
 const IconMail = () => (
   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
     <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/>
@@ -400,7 +546,7 @@ function useStaggerReveal(count, threshold = 0.08) {
 /* ══════════════════════════════════════════════
    NAVBAR
 ══════════════════════════════════════════════ */
-function Navbar() {
+function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -410,31 +556,58 @@ function Navbar() {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
-  const closeMenu = () => setMenuOpen(false);
-
   const navItems = [
-    { href: '#about',        label: 'Hakkımda' },
-    { href: '#experience',   label: 'Deneyim' },
-    { href: '#stack',        label: 'Tech Stack' },
-    { href: '#education',    label: 'Eğitim' },
-    { href: '#certificates', label: 'Sertifikalar' },
+    { id: 'about',        label: 'Hakkımda' },
+    { id: 'experience',   label: 'Deneyim' },
+    { id: 'stack',        label: 'Tech Stack' },
+    { id: 'education',    label: 'Eğitim' },
+    { id: 'certificates', label: 'Sertifikalar' },
   ];
+
+  const handleNav = (id) => {
+    navigate(id);
+    setMenuOpen(false);
+  };
 
   return (
     <>
       <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
-        <a href="#hero" className="nav__logo">İ<span>.</span>Bayramlı</a>
+        <a href="/" onClick={e => { e.preventDefault(); navigate('hero'); }} className="nav__logo">
+          İ<span>.</span>Bayramlı
+        </a>
         <ul className="nav__links">
-          {navItems.map(n => <li key={n.href}><a href={n.href}>{n.label}</a></li>)}
-          <li><a href="#contact" className="nav__cta">İletişim</a></li>
+          {navItems.map(n => (
+            <li key={n.id}>
+              <a href={ROUTES[n.id]} onClick={e => { e.preventDefault(); navigate(n.id); }}>
+                {n.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href={ROUTES.contact} onClick={e => { e.preventDefault(); navigate('contact'); }} className="nav__cta">
+              İletişim
+            </a>
+          </li>
         </ul>
-        <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(o => !o)} aria-label="Menü">
-          <span/><span/><span/>
-        </button>
+        <div style={{display:'flex', alignItems:'center', gap:'0.6rem'}}>
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Tema değiştir">
+            {theme === 'dark' ? <IconSun/> : <IconMoon/>}
+          </button>
+          <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(o => !o)} aria-label="Menü">
+            <span/><span/><span/>
+          </button>
+        </div>
       </nav>
       <div className={`mobile-overlay${menuOpen ? ' open' : ''}`}>
-        {navItems.map(n => <a key={n.href} href={n.href} onClick={closeMenu}>{n.label}</a>)}
-        <a href="#contact" onClick={closeMenu}>İletişim</a>
+        {navItems.map(n => (
+          <a key={n.id} href={ROUTES[n.id]} onClick={e => { e.preventDefault(); handleNav(n.id); }}>
+            {n.label}
+          </a>
+        ))}
+        <a href={ROUTES.contact} onClick={e => { e.preventDefault(); handleNav('contact'); }}>İletişim</a>
+        <button className="theme-toggle" onClick={() => { toggleTheme(); setMenuOpen(false); }} style={{marginTop:'1rem'}}>
+          {theme === 'dark' ? <IconSun/> : <IconMoon/>}
+        </button>
       </div>
     </>
   );
@@ -850,9 +1023,11 @@ function BackToTop() {
    APP
 ══════════════════════════════════════════════ */
 function App() {
+  const [theme, toggleTheme] = useTheme();
+  useScrollRouter();
   return (
     <>
-      <Navbar/>
+      <Navbar theme={theme} toggleTheme={toggleTheme}/>
       <Hero/>
       <About/>
       <Experience/>
