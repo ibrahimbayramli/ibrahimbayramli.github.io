@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>İbrahim Bayramlı — Software Engineer</title>
   <meta name="description" content="Backend odaklı Software Engineer. Java, Spring Boot, mikroservis mimarisi ve dağıtık sistemler." />
   <meta name="author" content="İbrahim Bayramlı" />
@@ -347,7 +348,7 @@
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
+const { useState, useEffect, useRef, useCallback, useContext, createContext } = React;
 
 /* ── GitHub Pages 404 redirect handler ── */
 (function() {
@@ -386,6 +387,138 @@ function useTheme() {
   const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
   return [theme, toggle];
 }
+
+/* ── i18n ─────────────────────────────────── */
+const TEXTS = {
+  tr: {
+    nav_logo:'Anasayfa', nav_about:'Hakkımda', nav_experience:'Deneyim',
+    nav_stack:'Tech Stack', nav_education:'Eğitim', nav_certificates:'Sertifikalar',
+    nav_contact:'İletişim', nav_theme:'Tema değiştir', nav_menu:'Menü',
+    hero_badge:'Şu an aktif · Atmosware × Turkcell, İstanbul',
+    hero_sub:'Java Software Engineer | Backend Specialist. Kurumsal ölçekte yüksek trafikli backend sistemleri tasarlar, ölçeklenebilir mikroservis mimarileri ile dijital dönüşüm projelerinde değer üretir.',
+    hero_cta:'İletişime Geç', hero_stat_years:'Yıl Deneyim', hero_stat_level:'Native Level', hero_stat_tech:'Teknoloji',
+    about_label:'01 · Hakkımda', about_heading:'Sistemler inşa ederim,\nölçeklenebilirlik dert edinmem.',
+    about_p1:'4 yıllık deneyimimle yüksek erişilebilirlikli, kurumsal ölçekli backend sistemleri tasarlıyor ve işletiyorum. Java & Spring-based sistemlerde uzmanlaşmış bir backend geliştiricisiyim.',
+    about_p2:"Şu anda Atmosware bünyesinde Turkcell'in İşTurkcell kurumsal dijital kanalları (Web, iOS, Android) için backend servisleri geliştiriyorum. Karmaşık iş süreçlerinin dijitalleştirilmesi, ölçeklenebilir mimari tasarımı ve on binlerce kurumsal kullanıcıya hizmet eden yüksek performanslı sistemler inşa ediyorum.",
+    about_p3:'Güvenilir backend sistemleri kurarak kurumsal ortamlarda ölçülebilir değer üretmekten keyif alıyorum.',
+    about_email:'E-posta',
+    card_location_l:'Konum', card_location_v:'İstanbul, Türkiye',
+    card_company_l:'Şirket', card_company_v:'Atmosware',
+    card_client_l:'Müşteri', card_client_v:'Turkcell · İşTurkcell',
+    card_expertise_l:'Uzmanlık', card_expertise_v:'Java · Backend · Microservices',
+    card_lang_l:'Diller', card_lang_v:'Türkçe (Anadil) · İngilizce (Orta)',
+    exp_label:'02 · Deneyim', exp_heading:'İş Deneyimi',
+    exp_desc:'Yüksek trafikli, kurumsal ölçekli üretim sistemlerinde aktif olarak çalışıyorum.',
+    exp_date:'Mayıs 2022 – Devam Ediyor · İstanbul, Türkiye', exp_impact_label:'Ölçülebilir Etki',
+    exp_bullets:[
+      'Turkcell İşTurkcell kurumsal dijital kanalları (Web, iOS, Android) için on binlerce kurumsal kullanıcıya hizmet eden yüksek trafikli Java / Spring Boot mikroservisleri geliştiriyorum.',
+      "Karmaşık kurumsal iş süreçlerini tamamen dijital süreçlere dönüştürme projelerinde aktif rol alarak ölçeklenebilir ve bakımı kolay API'lar tasarlıyorum.",
+      'Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini iyileştiriyorum.',
+      'Sorgu optimizasyonu, indeksleme, önbellekleme ve verimli veri modelleme ile veritabanı performansını artırıyorum. (PostgreSQL, PL/SQL, MongoDB)',
+      'Yüksek hacimli gerçek zamanlı işleme için Kafka, RabbitMQ ve Redis kullanan olay güdümlü dağıtık sistemler kuruyorum.',
+      "Jenkins, Maven, Gradle ve OpenShift ile CI/CD pipeline'ları uygulayarak konteyner tabanlı dağıtımları yönetiyorum.",
+      'Spring Security, OAuth2, JWT ve SSO tabanlı kimlik doğrulama & yetkilendirme mekanizmalarını entegre ediyorum.',
+      'Java ve .NET/C# servisleri arasında entegrasyon geliştiriyorum; REST ve mesaj kuyrukları üzerinden farklı sistemlerin haberleşmesini sağlıyorum.',
+    ],
+    exp_impact:[
+      '🏢  On binlerce kurumsal kullanıcıya hizmet eden birden fazla dijital kanalın backend sistemlerine katkıda bulundum.',
+      '⚡  Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini ölçülebilir biçimde iyileştirdim.',
+      '🔄  Manuel kurumsal iş akışlarının tamamen dijital süreçlere dönüştürülmesinde aktif rol aldım.',
+    ],
+    stack_label:'03 · Teknolojiler', stack_heading:'Tech Stack',
+    stack_desc:"Üretim ortamlarında aktif olarak kullandığım diller, framework'ler ve araçlar.",
+    str_label:'04 · Güçlü Yönler', str_heading:'Temel Yetkinlikler',
+    str_desc:'Teknik bilginin ötesinde öne çıkan özelliklerim.',
+    str_items:['Java & Spring Boot Backend Geliştirme','Ölçeklenebilir Mikroservis Mimarisi','Software Development Lifecycle','API Tasarımı (Web & Mobile)','Performans Optimizasyonu & Troubleshooting','Temiz Kod & Sürdürülebilir Sistem Tasarımı','Güvenilirlik & Dayanıklılık Mühendisliği','Sürekli Öğrenme & Dijital Dönüşüm'],
+    edu_label:'05 · Eğitim', edu_heading:'Eğitim Geçmişi',
+    edu_items:[
+      { badge:'Lisans', degree:'İnşaat Mühendisliği', school:'Bartın Üniversitesi', date:'Eylül 2016 – Temmuz 2021 · Bartın, Türkiye', desc:null },
+      { badge:'Sertifika', degree:'Oyun Programlama', school:'Üsküdar Üniversitesi', date:'Mart 2022 – Mayıs 2022 · İstanbul, Türkiye', desc:'Unity ve C# odaklı uygulamalı eğitim; oyun motoru temelleri, nesne yönelimli programlama ve gerçek zamanlı etkileşimli uygulama geliştirme.' },
+    ],
+    cert_label:'06 · Sertifikalar', cert_heading:'Lisanslar & Sertifikalar',
+    cert_desc:'HackerRank, BTK Akademi, Patika.dev ve diğer platformlardan alınan sertifikalar.',
+    contact_label:'07 · İletişim', contact_heading:'Birlikte çalışalım!',
+    contact_p:'Projeleriniz, iş birliği teklifleri veya sadece selamlaşmak için yazmaktan çekinmeyin.',
+    footer:'© 2025 İbrahim Bayramlı · İstanbul — Built with React',
+    back_to_top:'Başa dön',
+    mailto_subject:'Merhaba İbrahim, seninle tanışmak istiyorum 🚀',
+    mailto_body:`Merhaba İbrahim,\n\nLinkedIn profilini gördüm, CV'ni inceledim ve şunu düşündüm: "Bu adam Java'yı ana dil gibi konuşuyor." Seninle tanışmak istedim.\n\nKonu: [Buraya yazın]\nDetaylar: [Detayları ekleyin]\n\nP.S. Kafka ile event-driven sistem kuruyorsunuz ya — benim kafam da biraz öyle çalışıyor. Sürekli mesaj kuyruğunda bekliyor, kimse consume etmiyor. 😄\n\nSaygılarımla,\n[Adınız]`,
+  },
+  en: {
+    nav_logo:'Home', nav_about:'About', nav_experience:'Experience',
+    nav_stack:'Tech Stack', nav_education:'Education', nav_certificates:'Certificates',
+    nav_contact:'Contact', nav_theme:'Toggle theme', nav_menu:'Menu',
+    hero_badge:'Currently active · Atmosware × Turkcell, Istanbul',
+    hero_sub:'Java Software Engineer | Backend Specialist. Designs high-traffic backend systems at enterprise scale and delivers value in digital transformation projects with scalable microservice architectures.',
+    hero_cta:'Get in Touch', hero_stat_years:'Years Exp.', hero_stat_level:'Native Level', hero_stat_tech:'Technologies',
+    about_label:'01 · About', about_heading:'I build systems,\nscalability is a given.',
+    about_p1:'With 4 years of experience, I design and operate highly available, enterprise-scale backend systems. I am a backend developer specialized in Java & Spring-based systems.',
+    about_p2:"Currently at Atmosware, I develop backend services for Turkcell's İşTurkcell enterprise digital channels (Web, iOS, Android). I build high-performance systems serving tens of thousands of corporate users.",
+    about_p3:'I enjoy building reliable backend systems and delivering measurable value in enterprise environments.',
+    about_email:'Email',
+    card_location_l:'Location', card_location_v:'Istanbul, Turkey',
+    card_company_l:'Company', card_company_v:'Atmosware',
+    card_client_l:'Client', card_client_v:'Turkcell · İşTurkcell',
+    card_expertise_l:'Expertise', card_expertise_v:'Java · Backend · Microservices',
+    card_lang_l:'Languages', card_lang_v:'Turkish (Native) · English (Intermediate)',
+    exp_label:'02 · Experience', exp_heading:'Work Experience',
+    exp_desc:'Actively working on high-traffic, enterprise-scale production systems.',
+    exp_date:'May 2022 – Present · Istanbul, Turkey', exp_impact_label:'Measurable Impact',
+    exp_bullets:[
+      'Developing high-traffic Java / Spring Boot microservices for Turkcell İşTurkcell enterprise digital channels (Web, iOS, Android), serving tens of thousands of corporate users.',
+      'Taking an active role in projects digitizing complex enterprise business processes, designing scalable and maintainable APIs.',
+      'Improving service response times and system stability through performance tuning and refactoring.',
+      'Enhancing database performance through query optimization, indexing, caching, and efficient data modeling. (PostgreSQL, PL/SQL, MongoDB)',
+      'Building event-driven distributed systems using Kafka, RabbitMQ, and Redis for high-volume real-time processing.',
+      'Implementing CI/CD pipelines with Jenkins, Maven, Gradle, and OpenShift to manage container-based deployments.',
+      'Integrating Spring Security, OAuth2, JWT, and SSO-based authentication & authorization mechanisms.',
+      'Developing integrations between Java and .NET/C# services; enabling communication across different systems via REST and message queues.',
+    ],
+    exp_impact:[
+      '🏢  Contributed to backend systems of multiple digital channels serving tens of thousands of enterprise users.',
+      '⚡  Measurably improved service response times and system stability through performance tuning and refactoring.',
+      '🔄  Took an active role in the complete digitalization of manual enterprise workflows.',
+    ],
+    stack_label:'03 · Technologies', stack_heading:'Tech Stack',
+    stack_desc:'Languages, frameworks, and tools I actively use in production environments.',
+    str_label:'04 · Strengths', str_heading:'Core Competencies',
+    str_desc:'Qualities that stand out beyond technical knowledge.',
+    str_items:['Java & Spring Boot Backend Development','Scalable Microservice Architecture','Software Development Lifecycle','API Design (Web & Mobile)','Performance Optimization & Troubleshooting','Clean Code & Sustainable System Design','Reliability & Resilience Engineering','Continuous Learning & Digital Transformation'],
+    edu_label:'05 · Education', edu_heading:'Education Background',
+    edu_items:[
+      { badge:"Bachelor's", degree:'Civil Engineering', school:'Bartın University', date:'September 2016 – July 2021 · Bartın, Turkey', desc:null },
+      { badge:'Certificate', degree:'Game Programming', school:'Üsküdar University', date:'March 2022 – May 2022 · Istanbul, Turkey', desc:'Unity and C# focused applied training; game engine fundamentals, object-oriented programming, and real-time interactive application development.' },
+    ],
+    cert_label:'06 · Certificates', cert_heading:'Licenses & Certificates',
+    cert_desc:'Certificates from HackerRank, BTK Akademi, Patika.dev and other platforms.',
+    contact_label:'07 · Contact', contact_heading:"Let's work together!",
+    contact_p:'Feel free to reach out for your projects, collaboration proposals, or just to say hello.',
+    footer:'© 2025 İbrahim Bayramlı · Istanbul — Built with React',
+    back_to_top:'Back to top',
+    mailto_subject:"Hello Ibrahim, I'd like to connect 🚀",
+    mailto_body:`Hello Ibrahim,\n\nI came across your LinkedIn profile and thought: "This guy speaks Java like a native language." I'd love to connect.\n\nSubject: [Write here]\nDetails: [Add details]\n\nP.S. You're building event-driven systems with Kafka — my mind works a bit like that too. Messages constantly queued, nobody consuming. 😄\n\nBest regards,\n[Your name]`,
+  },
+};
+const LangContext = createContext({ lang:'tr', toggleLang:()=>{}, t: k => TEXTS.tr[k] });
+
+function useLang() {
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('lang');
+    if (saved) return saved;
+    return navigator.language?.startsWith('en') ? 'en' : 'tr';
+  });
+  useEffect(() => {
+    localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+  }, [lang]);
+  const toggleLang = () => setLang(l => l === 'tr' ? 'en' : 'tr');
+  return [lang, toggleLang];
+}
+
+const getMailtoUrl = (lang) => {
+  const tx = TEXTS[lang] || TEXTS.tr;
+  return `mailto:ibrahimbayramli@outlook.com?subject=${encodeURIComponent(tx.mailto_subject)}&body=${encodeURIComponent(tx.mailto_body)}`;
+};
 
 /* ── Router — History API, no # ── */
 const ROUTES = {
@@ -450,24 +583,6 @@ function useScrollRouter() {
   }, []);
 }
 
-/* ── Mailto with pre-filled subject & witty body ── */
-const MAILTO_URL = `mailto:ibrahimbayramli@outlook.com?subject=${
-  encodeURIComponent('Merhaba İbrahim, seninle tanışmak istiyorum 🚀')
-}&body=${
-  encodeURIComponent(
-`Merhaba İbrahim,
-
-LinkedIn profilini gördüm, CV'ni inceledim ve şunu düşündüm: "Bu adam Java'yı ana dil gibi konuşuyor." Seninle tanışmak istedim.
-
-Konu: [Buraya yazın]
-Detaylar: [Detayları ekleyin]
-
-P.S. Kafka ile event-driven sistem kuruyorsunuz ya — benim kafam da biraz öyle çalışıyor. Sürekli mesaj kuyruğunda bekliyor, kimse consume etmiyor. 😄
-
-Saygılarımla,
-[Adınız]`
-  )
-}`;
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/ibrahimbayramli';
 
@@ -551,6 +666,7 @@ function useStaggerReveal(count, threshold = 0.08) {
    NAVBAR
 ══════════════════════════════════════════════ */
 function Navbar({ theme, toggleTheme }) {
+  const { lang, toggleLang, t } = useContext(LangContext);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeId, setActiveId] = useState('hero');
@@ -576,43 +692,43 @@ function Navbar({ theme, toggleTheme }) {
   }, []);
 
   const navItems = [
-    { id: 'about',        label: 'Hakkımda' },
-    { id: 'experience',   label: 'Deneyim' },
-    { id: 'stack',        label: 'Tech Stack' },
-    { id: 'education',    label: 'Eğitim' },
-    { id: 'certificates', label: 'Sertifikalar' },
+    { id:'about',        labelKey:'nav_about' },
+    { id:'experience',   labelKey:'nav_experience' },
+    { id:'stack',        labelKey:'nav_stack' },
+    { id:'education',    labelKey:'nav_education' },
+    { id:'certificates', labelKey:'nav_certificates' },
   ];
 
-  const handleNav = (id) => {
-    navigate(id);
-    setMenuOpen(false);
-  };
+  const handleNav = (id) => { navigate(id); setMenuOpen(false); };
 
   return (
     <>
       <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
         <a href="/" onClick={e => { e.preventDefault(); navigate('hero'); }} className="nav__logo">
-          <span>{'{'}</span>Anasayfa<span>{'}'}</span>
+          <span>{'{'}</span>{t('nav_logo')}<span>{'}'}</span>
         </a>
         <ul className="nav__links">
           {navItems.map(n => (
             <li key={n.id}>
               <a href={ROUTES[n.id]} onClick={e => { e.preventDefault(); navigate(n.id); }} className={activeId === n.id ? 'nav__active' : ''}>
-                {n.label}
+                {t(n.labelKey)}
               </a>
             </li>
           ))}
           <li>
             <a href={ROUTES.contact} onClick={e => { e.preventDefault(); navigate('contact'); }} className={activeId === 'contact' ? 'nav__active' : ''}>
-              İletişim
+              {t('nav_contact')}
             </a>
           </li>
         </ul>
-        <div style={{display:'flex', alignItems:'center', gap:'0.6rem'}}>
-          <button className="theme-toggle" onClick={toggleTheme} aria-label="Tema değiştir">
+        <div style={{display:'flex', alignItems:'center', gap:'0.5rem'}}>
+          <button className="theme-toggle" onClick={toggleLang} aria-label="Dil değiştir" style={{fontFamily:"'JetBrains Mono',monospace", fontSize:'0.75rem', fontWeight:700, letterSpacing:'0.5px'}}>
+            {lang === 'tr' ? 'EN' : 'TR'}
+          </button>
+          <button className="theme-toggle" onClick={toggleTheme} aria-label={t('nav_theme')}>
             {theme === 'dark' ? <IconSun/> : <IconMoon/>}
           </button>
-          <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(o => !o)} aria-label="Menü">
+          <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(o => !o)} aria-label={t('nav_menu')}>
             <span/><span/><span/>
           </button>
         </div>
@@ -620,12 +736,15 @@ function Navbar({ theme, toggleTheme }) {
       <div className={`mobile-overlay${menuOpen ? ' open' : ''}`}>
         {navItems.map(n => (
           <a key={n.id} href={ROUTES[n.id]} onClick={e => { e.preventDefault(); handleNav(n.id); }}>
-            {n.label}
+            {t(n.labelKey)}
           </a>
         ))}
-        <a href={ROUTES.contact} onClick={e => { e.preventDefault(); handleNav('contact'); }}>İletişim</a>
-        <button className="theme-toggle" onClick={() => { toggleTheme(); setMenuOpen(false); }} style={{marginTop:'1rem'}}>
+        <a href={ROUTES.contact} onClick={e => { e.preventDefault(); handleNav('contact'); }}>{t('nav_contact')}</a>
+        <button className="theme-toggle" onClick={() => { toggleTheme(); setMenuOpen(false); }} style={{marginTop:'0.5rem'}}>
           {theme === 'dark' ? <IconSun/> : <IconMoon/>}
+        </button>
+        <button className="theme-toggle" onClick={() => { toggleLang(); setMenuOpen(false); }} style={{marginTop:'0.5rem', fontFamily:"'JetBrains Mono',monospace", fontSize:'0.75rem', fontWeight:700}}>
+          {lang === 'tr' ? 'EN' : 'TR'}
         </button>
       </div>
     </>
@@ -636,6 +755,8 @@ function Navbar({ theme, toggleTheme }) {
    HERO
 ══════════════════════════════════════════════ */
 function Hero() {
+  const { lang, t } = useContext(LangContext);
+  const mailtoUrl = getMailtoUrl(lang);
   return (
     <section className="hero" id="hero">
       <div className="blob blob--1"/><div className="blob blob--2"/><div className="blob blob--3"/>
@@ -643,17 +764,17 @@ function Hero() {
         <div className="hero__content">
           <div className="hero__badge anim-1">
             <span className="hero__badge-dot"/>
-            Şu an aktif · Atmosware × Turkcell, İstanbul
+            {t('hero_badge')}
           </div>
           <h1 className="hero__title anim-2">
             İbrahim<br/><span className="grad">Bayramlı</span>
           </h1>
           <p className="hero__sub anim-3">
-            <strong>Java Software Engineer | Backend Specialist.</strong> Kurumsal ölçekte yüksek trafikli backend sistemleri tasarlar, ölçeklenebilir mikroservis mimarileri ile dijital dönüşüm projelerinde değer üretir.
+            <strong>Java Software Engineer | Backend Specialist.</strong> {t('hero_sub').replace('Java Software Engineer | Backend Specialist. ', '')}
           </p>
           <div className="hero__btns anim-4">
-            <a href={MAILTO_URL} className="btn btn--primary">
-              <IconMail/> İletişime Geç
+            <a href={mailtoUrl} className="btn btn--primary">
+              <IconMail/> {t('hero_cta')}
             </a>
             <a href={LINKEDIN_URL} target="_blank" rel="noopener" className="btn btn--ghost">
               <IconLinkedIn size={16}/> LinkedIn
@@ -661,9 +782,9 @@ function Hero() {
           </div>
           <div className="hero__stats anim-5">
             {[
-              { num: '4+',  label: 'Yıl Deneyim' },
-              { num: 'Java', label: 'Native Level' },
-              { num: '14',  label: 'Teknoloji' },
+              { num:'4+',   label: t('hero_stat_years') },
+              { num:'Java', label: t('hero_stat_level') },
+              { num:'21',   label: t('hero_stat_tech') },
             ].map(s => (
               <div key={s.label}>
                 <div className="stat__num">{s.num}</div>
@@ -684,45 +805,31 @@ function Hero() {
    ABOUT
 ══════════════════════════════════════════════ */
 function About() {
+  const { lang, t } = useContext(LangContext);
+  const mailtoUrl = getMailtoUrl(lang);
   const socials = [
     { href:'https://github.com/ibrahimbayramli', icon:<IconGitHub/>, label:'GitHub' },
     { href:LINKEDIN_URL, icon:<IconLinkedIn/>, label:'LinkedIn' },
-    { href:MAILTO_URL, icon:<IconMail/>, label:'E-posta' },
+    { href:mailtoUrl, icon:<IconMail/>, label:t('about_email') },
   ];
-  const enLevel = (() => {
-    const langs = navigator.languages || [navigator.language];
-    const hasEn = langs.some(l => l.toLowerCase().startsWith('en'));
-    return hasEn ? 'Akıcı' : 'Profesyonel';
-  })();
   const cards = [
-    { icon:'📍', label:'Konum',    value:'İstanbul, Türkiye' },
-    { icon:'💼', label:'Şirket',   value:'Atmosware' },
-    { icon:'🏢', label:'Müşteri',  value:'Turkcell · İşTurkcell' },
-    { icon:'🚀', label:'Uzmanlık', value:'Java · Backend · Microservices' },
-    { icon:'🌐', label:'Diller',   value:`Türkçe (Anadil) · İngilizce (${enLevel})` },
+    { icon:'📍', label:t('card_location_l'), value:t('card_location_v') },
+    { icon:'💼', label:t('card_company_l'),  value:t('card_company_v') },
+    { icon:'🏢', label:t('card_client_l'),   value:t('card_client_v') },
+    { icon:'🚀', label:t('card_expertise_l'),value:t('card_expertise_v') },
+    { icon:'🌐', label:t('card_lang_l'),     value:t('card_lang_v') },
   ];
+  const headingLines = t('about_heading').split('\n');
   return (
     <section className="section section--alt" id="about">
       <div className="inner">
         <div className="about-grid">
           <div className="about-text">
-            <span className="label">01 · Hakkımda</span>
-            <h2 className="heading">Sistemler inşa ederim,<br/>ölçeklenebilirlik dert edinmem.</h2>
-            <p>
-              <strong>Java Software Engineer | Backend Specialist.</strong> 4 yıllık deneyimimle
-              yüksek erişilebilirlikli, kurumsal ölçekli backend sistemleri tasarlıyor ve işletiyorum.
-              Java &amp; Spring-based sistemlerde uzmanlaşmış bir backend geliştiricisiyim.
-            </p>
-            <p>
-              Şu anda <strong>Atmosware</strong> bünyesinde <strong>Turkcell</strong>'in İşTurkcell
-              kurumsal dijital kanalları (Web, iOS, Android) için backend servisleri geliştiriyorum.
-              Karmaşık iş süreçlerinin dijitalleştirilmesi, ölçeklenebilir mimari tasarımı ve
-              on binlerce kurumsal kullanıcıya hizmet eden yüksek performanslı sistemler inşa ediyorum.
-            </p>
-            <p>
-              Güvenilir backend sistemleri kurarak kurumsal ortamlarda ölçülebilir değer üretmekten
-              keyif alıyorum.
-            </p>
+            <span className="label">{t('about_label')}</span>
+            <h2 className="heading">{headingLines[0]}<br/>{headingLines[1]}</h2>
+            <p><strong>Java Software Engineer | Backend Specialist.</strong> {t('about_p1')}</p>
+            <p>{t('about_p2')}</p>
+            <p>{t('about_p3')}</p>
             <div className="socials">
               {socials.map(s => (
                 <a key={s.label} href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined}
@@ -751,41 +858,28 @@ function About() {
    EXPERIENCE
 ══════════════════════════════════════════════ */
 function Experience() {
+  const { t } = useContext(LangContext);
   const [ref, visible] = useReveal(0.1);
-  const bullets = [
-    'Turkcell İşTurkcell kurumsal dijital kanalları (Web, iOS, Android) için on binlerce kurumsal kullanıcıya hizmet eden yüksek trafikli Java / Spring Boot mikroservisleri geliştiriyorum.',
-    'Karmaşık kurumsal iş süreçlerini tamamen dijital süreçlere dönüştürme projelerinde aktif rol alarak ölçeklenebilir ve bakımı kolay API\'lar tasarlıyorum.',
-    'Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini iyileştiriyorum.',
-    'Sorgu optimizasyonu, indeksleme, önbellekleme ve verimli veri modelleme ile veritabanı performansını artırıyorum. (PostgreSQL, PL/SQL, MongoDB)',
-    'Yüksek hacimli gerçek zamanlı işleme için Kafka, RabbitMQ ve Redis kullanan olay güdümlü dağıtık sistemler kuruyorum.',
-    'Jenkins, Maven, Gradle ve OpenShift ile CI/CD pipeline\'ları uygulayarak konteyner tabanlı dağıtımları yönetiyorum.',
-    'Spring Security, OAuth2, JWT ve SSO tabanlı kimlik doğrulama & yetkilendirme mekanizmalarını entegre ediyorum.',
-    'Java, .NET/C# ve Python servisleri arasında entegrasyon geliştiriyorum; REST ve mesaj kuyrukları üzerinden farklı sistemlerin haberleşmesini sağlıyorum.',
-  ];
   return (
     <section className="section" id="experience">
       <div className="inner">
-        <span className="label">02 · Deneyim</span>
-        <h2 className="heading">İş Deneyimi</h2>
-        <p className="desc">Yüksek trafikli, kurumsal ölçekli üretim sistemlerinde aktif olarak çalışıyorum.</p>
+        <span className="label">{t('exp_label')}</span>
+        <h2 className="heading">{t('exp_heading')}</h2>
+        <p className="desc">{t('exp_desc')}</p>
         <div className="timeline">
           <div ref={ref} className={`tl-item${visible ? ' show' : ''}`}>
             <div className="tl-dot"/>
-            <div className="tl-meta">Mayıs 2022 – Devam Ediyor · İstanbul, Türkiye</div>
+            <div className="tl-meta">{t('exp_date')}</div>
             <div className="tl-company">Atmosware</div>
             <div className="tl-role">Software Engineer &nbsp;·&nbsp; <span style={{color:'var(--accent2)'}}>Turkcell / İşTurkcell</span></div>
             <div className="tl-card">
               <ul className="tl-list">
-                {bullets.map((b, i) => <li key={i}>{b}</li>)}
+                {t('exp_bullets').map((b, i) => <li key={i}>{b}</li>)}
               </ul>
               <div style={{marginTop:'1.4rem', paddingTop:'1.2rem', borderTop:'1px solid var(--border)'}}>
-                <div style={{fontSize:'0.72rem', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace", marginBottom:'0.8rem'}}>Ölçülebilir Etki</div>
+                <div style={{fontSize:'0.72rem', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace", marginBottom:'0.8rem'}}>{t('exp_impact_label')}</div>
                 <div style={{display:'flex', flexDirection:'column', gap:'0.5rem'}}>
-                  {[
-                    '🏢  On binlerce kurumsal kullanıcıya hizmet eden birden fazla dijital kanalın backend sistemlerine katkıda bulundum.',
-                    '⚡  Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini ölçülebilir biçimde iyileştirdim.',
-                    '🔄  Manuel kurumsal iş akışlarının tamamen dijital süreçlere dönüştürülmesinde aktif rol aldım.',
-                  ].map((item, i) => (
+                  {t('exp_impact').map((item, i) => (
                     <div key={i} style={{fontSize:'0.87rem', color:'var(--muted)', lineHeight:1.65}}>{item}</div>
                   ))}
                 </div>
@@ -805,6 +899,7 @@ const DI = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
 const SI = 'https://cdn.simpleicons.org';
 
 function TechStack() {
+  const { t } = useContext(LangContext);
   const techs = [
     { logo:`${DI}/java/java-original.svg`,                         name:'Java',            level:'native',       lbl:'Native' },
     { logo:`${DI}/spring/spring-original.svg`,                     name:'Spring Boot',     level:'native',       lbl:'Native' },
@@ -832,9 +927,9 @@ function TechStack() {
   return (
     <section className="section section--alt" id="stack">
       <div className="inner">
-        <span className="label">03 · Teknolojiler</span>
-        <h2 className="heading">Tech Stack</h2>
-        <p className="desc">Üretim ortamlarında aktif olarak kullandığım diller, framework'ler ve araçlar.</p>
+        <span className="label">{t('stack_label')}</span>
+        <h2 className="heading">{t('stack_heading')}</h2>
+        <p className="desc">{t('stack_desc')}</p>
         <div className="tech-grid" ref={ref}>
           {techs.map((t, i) => (
             <div key={t.name} className={`tech-card${visible[i] ? ' show' : ''}`}>
@@ -856,23 +951,25 @@ function TechStack() {
    STRENGTHS
 ══════════════════════════════════════════════ */
 function Strengths() {
-  const items = [
-    { icon: <SvgIcon><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></SvgIcon>, title:'Java & Spring Boot Backend Geliştirme' },
-    { icon: <SvgIcon><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/></SvgIcon>, title:'Ölçeklenebilir Mikroservis Mimarisi' },
-    { icon: <SvgIcon><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></SvgIcon>, title:'Software Development Lifecycle' },
-    { icon: <SvgIcon><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></SvgIcon>, title:'API Tasarımı (Web & Mobile)' },
-    { icon: <SvgIcon><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></SvgIcon>, title:'Performans Optimizasyonu & Troubleshooting' },
-    { icon: <SvgIcon><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></SvgIcon>, title:'Temiz Kod & Sürdürülebilir Sistem Tasarımı' },
-    { icon: <SvgIcon><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></SvgIcon>, title:'Güvenilirlik & Dayanıklılık Mühendisliği' },
-    { icon: <SvgIcon><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></SvgIcon>, title:'Sürekli Öğrenme & Dijital Dönüşüm' },
+  const { t } = useContext(LangContext);
+  const icons = [
+    <SvgIcon><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></SvgIcon>,
+    <SvgIcon><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/></SvgIcon>,
+    <SvgIcon><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></SvgIcon>,
+    <SvgIcon><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></SvgIcon>,
+    <SvgIcon><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></SvgIcon>,
+    <SvgIcon><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></SvgIcon>,
+    <SvgIcon><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></SvgIcon>,
+    <SvgIcon><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></SvgIcon>,
   ];
+  const items = t('str_items').map((title, i) => ({ icon: icons[i], title }));
   const [ref, visible] = useStaggerReveal(items.length, 0.06);
   return (
     <section className="section" id="strengths">
       <div className="inner">
-        <span className="label">04 · Güçlü Yönler</span>
-        <h2 className="heading">Temel Yetkinlikler</h2>
-        <p className="desc">Teknik bilginin ötesinde öne çıkan özelliklerim.</p>
+        <span className="label">{t('str_label')}</span>
+        <h2 className="heading">{t('str_heading')}</h2>
+        <p className="desc">{t('str_desc')}</p>
         <div className="str-grid" ref={ref}>
           {items.map((s, i) => (
             <div key={s.title} className={`str-card${visible[i] ? ' show' : ''}`}>
@@ -890,28 +987,14 @@ function Strengths() {
    EDUCATION
 ══════════════════════════════════════════════ */
 function Education() {
-  const [ref, visible] = useStaggerReveal(2);
-  const edu = [
-    {
-      badge: 'Lisans',
-      degree: 'İnşaat Mühendisliği',
-      school: 'Bartın Üniversitesi',
-      date: 'Eylül 2016 – Temmuz 2021 · Bartın, Türkiye',
-      desc: null,
-    },
-    {
-      badge: 'Sertifika',
-      degree: 'Oyun Programlama',
-      school: 'Üsküdar Üniversitesi',
-      date: 'Mart 2022 – Mayıs 2022 · İstanbul, Türkiye',
-      desc: 'Unity ve C# odaklı uygulamalı eğitim; oyun motoru temelleri, nesne yönelimli programlama ve gerçek zamanlı etkileşimli uygulama geliştirme.',
-    },
-  ];
+  const { t } = useContext(LangContext);
+  const edu = t('edu_items');
+  const [ref, visible] = useStaggerReveal(edu.length);
   return (
     <section className="section section--alt" id="education">
       <div className="inner">
-        <span className="label">05 · Eğitim</span>
-        <h2 className="heading">Eğitim Geçmişi</h2>
+        <span className="label">{t('edu_label')}</span>
+        <h2 className="heading">{t('edu_heading')}</h2>
         <div className="edu-grid" ref={ref}>
           {edu.map((e, i) => (
             <div key={e.degree} className={`edu-card${visible[i] ? ' show' : ''}`}>
@@ -932,6 +1015,7 @@ function Education() {
    CERTIFICATES
 ══════════════════════════════════════════════ */
 function Certificates() {
+  const { t } = useContext(LangContext);
   const issuers = {
     'HackerRank':    { color:'#2ec866', abbr:'HR' },
     'BTK Akademi':   { color:'#1a4f8a', abbr:'BTK' },
@@ -969,9 +1053,9 @@ function Certificates() {
   return (
     <section className="section" id="certificates">
       <div className="inner">
-        <span className="label">06 · Sertifikalar</span>
-        <h2 className="heading">Lisanslar &amp; Sertifikalar</h2>
-        <p className="desc">HackerRank, BTK Akademi, Patika.dev ve diğer platformlardan alınan sertifikalar.</p>
+        <span className="label">{t('cert_label')}</span>
+        <h2 className="heading">{t('cert_heading')}</h2>
+        <p className="desc">{t('cert_desc')}</p>
         <div className="cert-grid" ref={ref}>
           {certs.map((c, i) => {
             const style = getIssuerStyle(c.issuer);
@@ -1001,6 +1085,7 @@ function Certificates() {
    CONTACT
 ══════════════════════════════════════════════ */
 function Contact() {
+  const { lang, t } = useContext(LangContext);
   const links = [
     { href:LINKEDIN_URL,                         icon:<IconLinkedIn size={14}/>, text:'linkedin.com/in/ibrahimbayramli' },
     { href:'https://github.com/ibrahimbayramli', icon:<IconGitHub size={14}/>,   text:'github.com/ibrahimbayramli' },
@@ -1010,10 +1095,10 @@ function Contact() {
       <div className="inner">
         <div className="contact-wrap">
           <div className="contact-box">
-            <span className="label" style={{justifyContent:'center',display:'flex',marginBottom:'0.9rem'}}>07 · İletişim</span>
-            <h3>Birlikte çalışalım!</h3>
-            <p>Projeleriniz, iş birliği teklifleri veya sadece selamlaşmak için yazmaktan çekinmeyin.</p>
-            <a href={MAILTO_URL} className="btn btn--primary" style={{margin:'0 auto'}}>
+            <span className="label" style={{justifyContent:'center',display:'flex',marginBottom:'0.9rem'}}>{t('contact_label')}</span>
+            <h3>{t('contact_heading')}</h3>
+            <p>{t('contact_p')}</p>
+            <a href={getMailtoUrl(lang)} className="btn btn--primary" style={{margin:'0 auto'}}>
               <IconMail/> ibrahimbayramli@outlook.com
             </a>
             <div className="contact-links">
@@ -1034,6 +1119,7 @@ function Contact() {
    BACK TO TOP
 ══════════════════════════════════════════════ */
 function BackToTop() {
+  const { t } = useContext(LangContext);
   const [show, setShow] = useState(false);
   useEffect(() => {
     const h = () => setShow(window.scrollY > 400);
@@ -1044,7 +1130,7 @@ function BackToTop() {
     <button
       className={`back-top${show ? ' show' : ''}`}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      aria-label="Başa dön"
+      aria-label={t('back_to_top')}
     >
       <IconArrowUp/>
     </button>
@@ -1054,11 +1140,18 @@ function BackToTop() {
 /* ══════════════════════════════════════════════
    APP
 ══════════════════════════════════════════════ */
+function Footer() {
+  const { t } = useContext(LangContext);
+  return <footer className="footer"><p>{t('footer')}</p></footer>;
+}
+
 function App() {
   const [theme, toggleTheme] = useTheme();
+  const [lang, toggleLang] = useLang();
+  const t = k => TEXTS[lang]?.[k] ?? TEXTS.tr[k];
   useScrollRouter();
   return (
-    <>
+    <LangContext.Provider value={{ lang, toggleLang, t }}>
       <Navbar theme={theme} toggleTheme={toggleTheme}/>
       <Hero/>
       <About/>
@@ -1068,11 +1161,9 @@ function App() {
       <Education/>
       <Certificates/>
       <Contact/>
-      <footer className="footer">
-        <p>© 2025 İbrahim Bayramlı · İstanbul — Built with React</p>
-      </footer>
+      <Footer/>
       <BackToTop/>
-    </>
+    </LangContext.Provider>
   );
 }
 
