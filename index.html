@@ -1,281 +1,876 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>İbrahim BAYRAMLI</title>
-    <meta name="description" content="portfolio" />
-    <meta name="author" content="ibrahimbayramli" />
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Additional CSS Files -->
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/fontawesome.css" />
-    <link rel="stylesheet" href="assets/css/tooplate-style.css" />
-    <link rel="stylesheet" href="assets/css/owl.css" />
-    <link rel="stylesheet" href="assets/css/lightbox.css" />
-  </head>
-<!--
-Tooplate 2116 Blugoon
-https://www.tooplate.com/view/2116-blugoon
--->
-  <body>
-    <div id="page-wraper">
-      <!-- Sidebar Menu -->
-      <div class="responsive-nav">
-        <i class="fa fa-bars" id="menu-toggle"></i>
-        <div id="menu" class="menu">
-          <i class="fa fa-times" id="menu-close"></i>
-          <div class="container">
-            <div class="image">
-              <a href="#"><img src="assets/images/logo-image.jpg" alt="Blugoon by Tooplate" /></a>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İbrahim Bayramlı — Software Engineer</title>
+  <meta name="description" content="Backend odaklı Software Engineer. Java, Spring Boot, mikroservis mimarisi ve dağıtık sistemler." />
+  <meta name="author" content="İbrahim Bayramlı" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #07090f;
+      --bg2:     #0c0f1a;
+      --surface: #111827;
+      --surface2:#1a2234;
+      --border:  rgba(255,255,255,0.07);
+      --accent:  #4f8ef7;
+      --accent2: #06b6d4;
+      --green:   #22d3a5;
+      --glow:    rgba(79,142,247,0.3);
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --white:   #ffffff;
+      --radius:  14px;
+      --ease:    cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+    #root { min-height: 100vh; }
+
+    /* ── GLOBAL ── */
+    .section { padding: 110px 6%; position: relative; z-index: 1; }
+    .section--alt { background: var(--bg2); }
+    .inner { max-width: 1140px; margin: 0 auto; }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px;
+      color: var(--accent); text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem;
+      display: block;
+    }
+    .heading {
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 800;
+      color: var(--white); letter-spacing: -1.2px; line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .desc { color: var(--muted); font-size: 0.97rem; max-width: 560px; line-height: 1.8; margin-bottom: 3.5rem; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 68px; padding: 0 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease), backdrop-filter 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav--scrolled {
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(22px);
+      border-bottom-color: var(--border);
+    }
+    .nav__logo { font-size: 1.05rem; font-weight: 800; color: var(--white); text-decoration: none; letter-spacing: -0.5px; }
+    .nav__logo span { color: var(--accent); }
+    .nav__links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav__links a { color: var(--muted); text-decoration: none; font-size: 0.87rem; font-weight: 500; transition: color 0.2s; }
+    .nav__links a:hover { color: var(--white); }
+    .nav__cta {
+      background: var(--accent) !important; color: var(--white) !important;
+      padding: 7px 20px; border-radius: 9px; font-weight: 600 !important;
+    }
+    .nav__cta:hover { background: #3b7ef0 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s var(--ease); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(7,9,15,0.97); backdrop-filter: blur(24px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+      transform: translateX(100%); transition: transform 0.35s var(--ease);
+    }
+    .mobile-overlay.open { transform: translateX(0); }
+    .mobile-overlay a { font-size: 1.6rem; font-weight: 700; color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .mobile-overlay a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; padding: 0 6%;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero__inner { max-width: 1140px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 400px; gap: 5rem; align-items: center; }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.3);
+      color: var(--accent); font-size: 0.78rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 100px; letter-spacing: 0.6px;
+      margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .hero__badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 1.8s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+    .hero__title { font-size: clamp(2.8rem, 5.5vw, 4.6rem); font-weight: 900; line-height: 1.04; letter-spacing: -2.5px; color: var(--white); margin-bottom: 1.2rem; }
+    .hero__title .grad { background: linear-gradient(130deg, var(--accent), var(--accent2) 60%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero__sub { font-size: 1.05rem; color: var(--muted); max-width: 500px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .hero__sub strong { color: var(--text); font-weight: 600; }
+    .hero__btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 11px; font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: all 0.25s var(--ease); border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .btn--primary { background: var(--accent); color: #fff; box-shadow: 0 0 35px var(--glow); }
+    .btn--primary:hover { background: #3b7ef0; transform: translateY(-2px); box-shadow: 0 0 50px var(--glow); }
+    .btn--ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn--ghost:hover { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
+    .hero__stats { display: flex; gap: 3rem; margin-top: 0; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .stat__num { font-size: 2rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .stat__label { font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+    /* photo */
+    .hero__photo-wrap {
+      position: relative;
+      animation: fadeRight 0.9s 0.2s ease both;
+    }
+    .hero__photo-wrap::before {
+      content: ''; position: absolute; inset: -2px; border-radius: 22px; z-index: -1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), rgba(0,0,0,0));
+      opacity: 0.65;
+    }
+    .hero__photo-wrap::after {
+      content: ''; position: absolute; inset: -60px; z-index: -2; border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,142,247,0.13) 0%, transparent 65%);
+    }
+    .hero__photo { width: 100%; display: block; border-radius: 20px; object-fit: cover; aspect-ratio: 4/5; filter: grayscale(10%); transition: filter 0.4s; }
+    .hero__photo:hover { filter: grayscale(0%); }
+    /* blobs */
+    .blob { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+    .blob--1 { width: 600px; height: 600px; top: -150px; left: -150px; background: radial-gradient(circle, rgba(79,142,247,0.1) 0%, transparent 70%); }
+    .blob--2 { width: 500px; height: 500px; bottom: -100px; right: 0; background: radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%); }
+    .blob--3 { width: 300px; height: 300px; top: 30%; left: 40%; background: radial-gradient(circle, rgba(34,211,165,0.05) 0%, transparent 70%); }
+    /* animations */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeRight{ from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+    .anim-1 { animation: fadeUp 0.65s 0.05s ease both; }
+    .anim-2 { animation: fadeUp 0.65s 0.15s ease both; }
+    .anim-3 { animation: fadeUp 0.65s 0.25s ease both; }
+    .anim-4 { animation: fadeUp 0.65s 0.35s ease both; }
+    .anim-5 { animation: fadeUp 0.65s 0.45s ease both; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-text p { color: var(--muted); font-size: 0.97rem; line-height: 1.85; margin-bottom: 1.1rem; }
+    .about-text p strong { color: var(--text); font-weight: 600; }
+    .socials { display: flex; gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap; }
+    .social-btn {
+      width: 44px; height: 44px; border-radius: 11px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); display: inline-flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 1rem; transition: all 0.25s var(--ease);
+    }
+    .social-btn:hover { color: var(--accent); border-color: rgba(79,142,247,0.4); background: rgba(79,142,247,0.08); transform: translateY(-3px); }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .info-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.3rem 1.2rem;
+      transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+    }
+    .info-card:hover { border-color: rgba(79,142,247,0.3); transform: translateY(-2px); }
+    .info-card__icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .info-card__label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 600; margin-bottom: 0.25rem; }
+    .info-card__value { font-size: 0.88rem; color: var(--white); font-weight: 600; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 2.2rem; }
+    .timeline::before { content:''; position:absolute; left:0; top:10px; bottom:20px; width:1px; background: linear-gradient(to bottom, var(--accent) 0%, transparent 100%); }
+    .tl-item { position: relative; margin-bottom: 3rem; opacity:0; transform:translateY(20px); transition: all 0.5s ease; }
+    .tl-item.show { opacity:1; transform:translateY(0); }
+    .tl-dot { position:absolute; left:-2.45rem; top:5px; width:13px; height:13px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(79,142,247,0.18); }
+    .tl-meta { font-size:0.75rem; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:0.4rem; }
+    .tl-company { font-size:1.15rem; font-weight:800; color:var(--white); margin-bottom:0.15rem; }
+    .tl-role { font-size:0.82rem; color:var(--accent); font-weight:700; margin-bottom:1rem; letter-spacing:0.3px; }
+    .tl-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.6rem; transition: border-color 0.25s var(--ease); }
+    .tl-card:hover { border-color:rgba(79,142,247,0.25); }
+    .tl-list { list-style:none; display:flex; flex-direction:column; gap:0.7rem; }
+    .tl-list li { display:flex; gap:0.8rem; font-size:0.88rem; color:var(--muted); line-height:1.7; }
+    .tl-list li::before { content:'→'; color:var(--accent); flex-shrink:0; font-family:'JetBrains Mono',monospace; font-weight:700; margin-top:1px; }
+
+    /* ── TECH ── */
+    .tech-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:0.9rem; }
+    .tech-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:1.4rem 1rem;
+      text-align:center; cursor:default; opacity:0; transform:scale(0.94);
+      transition:all 0.35s ease;
+    }
+    .tech-card.show { opacity:1; transform:scale(1); }
+    .tech-card:hover { border-color:rgba(79,142,247,0.4); background:rgba(79,142,247,0.06); transform:translateY(-5px); }
+    .tech-card__icon { font-size:2rem; margin-bottom:0.55rem; display:block; }
+    .tech-card__logo { width:44px; height:44px; object-fit:contain; margin:0 auto 0.55rem; display:block; }
+    .tech-card__name { font-size:0.8rem; font-weight:700; color:var(--text); margin-bottom:0.3rem; }
+    .tech-card__level { font-size:0.67rem; font-family:'JetBrains Mono',monospace; font-weight:600; }
+    .tech-card__level.native { color:var(--accent); }
+    .tech-card__level.professional { color:var(--accent2); }
+
+    /* ── STRENGTHS ── */
+    .str-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:1rem; }
+    .str-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:1.8rem 1.5rem;
+      opacity:0; transform:translateY(18px); transition:all 0.4s ease;
+    }
+    .str-card.show { opacity:1; transform:translateY(0); }
+    .str-card:hover { border-color:rgba(79,142,247,0.35); background:rgba(79,142,247,0.05); transform:translateY(-4px); }
+    .str-card__icon { font-size:1.9rem; margin-bottom:0.8rem; display:block; }
+    .str-card__title { font-size:0.87rem; font-weight:700; color:var(--white); line-height:1.4; }
+
+    /* ── EDUCATION ── */
+    .edu-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; }
+    .edu-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:2rem;
+      opacity:0; transform:translateY(18px); transition:all 0.4s ease;
+    }
+    .edu-card.show { opacity:1; transform:translateY(0); }
+    .edu-card:hover { border-color:rgba(79,142,247,0.3); transform:translateY(-3px); }
+    .edu-badge {
+      display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+      color:var(--accent); background:rgba(79,142,247,0.1); border:1px solid rgba(79,142,247,0.22);
+      padding:4px 11px; border-radius:7px; margin-bottom:1rem;
+    }
+    .edu-degree { font-size:1.05rem; font-weight:800; color:var(--white); margin-bottom:0.3rem; }
+    .edu-school { font-size:0.88rem; color:var(--accent2); font-weight:600; margin-bottom:0.4rem; }
+    .edu-date { font-size:0.74rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .edu-desc { margin-top:0.8rem; font-size:0.87rem; color:var(--muted); line-height:1.75; }
+
+    /* ── CONTACT ── */
+    .contact-wrap { display:flex; justify-content:center; }
+    .contact-box {
+      max-width:660px; width:100%;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:22px; padding:3.5rem;
+      position:relative; overflow:hidden; text-align:center;
+    }
+    .contact-box::before {
+      content:''; position:absolute; inset:0; border-radius:inherit;
+      background:radial-gradient(ellipse at 50% -10%, rgba(79,142,247,0.13) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .contact-box h3 { font-size:1.9rem; font-weight:800; color:var(--white); letter-spacing:-0.5px; margin-bottom:0.8rem; }
+    .contact-box p { color:var(--muted); font-size:0.97rem; line-height:1.75; margin-bottom:2.2rem; }
+    .contact-links { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border); }
+    .contact-link { display:inline-flex; align-items:center; gap:7px; color:var(--muted); text-decoration:none; font-size:0.82rem; font-weight:500; transition:color 0.2s; }
+    .contact-link:hover { color:var(--accent); }
+    /* ── CERTIFICATES ── */
+    .cert-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1rem; }
+    .cert-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:1.3rem 1.4rem;
+      display:flex; gap:1rem; align-items:flex-start;
+      opacity:0; transform:translateY(16px); transition:all 0.4s ease;
+    }
+    .cert-card.show { opacity:1; transform:translateY(0); }
+    .cert-card:hover { border-color:rgba(79,142,247,0.3); transform:translateY(-3px); }
+    .cert-issuer-dot {
+      width:38px; height:38px; border-radius:9px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.65rem; font-weight:800; letter-spacing:0.3px; color:#fff;
+    }
+    .cert-body { flex:1; min-width:0; }
+    .cert-name { font-size:0.88rem; font-weight:700; color:var(--white); line-height:1.35; margin-bottom:0.25rem; }
+    .cert-issuer { font-size:0.76rem; color:var(--accent2); font-weight:600; margin-bottom:0.2rem; }
+    .cert-date { font-size:0.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:0.5rem; }
+    .cert-skills { display:flex; flex-wrap:wrap; gap:0.35rem; }
+    .cert-skill {
+      font-size:0.66rem; font-weight:600; padding:2px 8px; border-radius:5px;
+      background:rgba(79,142,247,0.1); border:1px solid rgba(79,142,247,0.18); color:var(--accent);
+    }
+    /* footer */
+    .footer { text-align:center; padding:2rem 6%; border-top:1px solid var(--border); color:var(--muted); font-size:0.78rem; }
+    /* back-top */
+    .back-top {
+      position:fixed; bottom:2rem; right:2rem; z-index:900;
+      width:44px; height:44px; border-radius:11px;
+      background:var(--accent); color:#fff; border:none; cursor:pointer;
+      font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 20px var(--glow);
+      opacity:0; pointer-events:none; transform:translateY(10px);
+      transition:all 0.3s var(--ease);
+    }
+    .back-top.show { opacity:1; pointer-events:auto; transform:translateY(0); }
+    .back-top:hover { background:#3b7ef0; transform:translateY(-3px); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:960px) {
+      .hero__inner { grid-template-columns:1fr; text-align:center; }
+      .hero__photo-wrap { max-width:280px; margin:0 auto; order:-1; }
+      .hero__sub { margin-left:auto; margin-right:auto; }
+      .hero__btns { justify-content:center; }
+      .hero__stats { justify-content:center; width:100%; }
+      .about-grid { grid-template-columns:1fr; gap:3rem; }
+      .edu-grid { grid-template-columns:1fr; }
+      .nav__links { display:none; }
+      .hamburger { display:flex; }
+    }
+    @media (max-width:600px) {
+      .section { padding:72px 5%; }
+      .tech-grid { grid-template-columns:repeat(2,1fr); }
+      .str-grid { grid-template-columns:1fr 1fr; }
+      @media (max-width:760px) { .str-grid { grid-template-columns:1fr 1fr; } }
+      .contact-box { padding:2.2rem 1.5rem; }
+      .info-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ── Mailto with pre-filled subject & witty body ── */
+const MAILTO_URL = `mailto:ibrahimbayramli@outlook.com?subject=${
+  encodeURIComponent('Merhaba İbrahim, seninle tanışmak istiyorum 🚀')
+}&body=${
+  encodeURIComponent(
+`Merhaba İbrahim,
+
+LinkedIn profilini gördüm, CV'ni inceledim ve şunu düşündüm: "Bu adam Java'yı ana dil gibi konuşuyor." Seninle tanışmak istedim.
+
+Konu: [Buraya yazın]
+Detaylar: [Detayları ekleyin]
+
+P.S. Kafka ile event-driven sistem kuruyorsunuz ya — benim kafam da biraz öyle çalışıyor. Sürekli mesaj kuyruğunda bekliyor, kimse consume etmiyor. 😄
+
+Saygılarımla,
+[Adınız]`
+  )
+}`;
+
+const LINKEDIN_URL = 'https://www.linkedin.com/in/ibrahimbayramli';
+
+/* ── SVG Icons ─────────────────────────────── */
+const IconMail = () => (
+  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/>
+  </svg>
+);
+const IconLinkedIn = ({ size=18 }) => (
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+    <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+  </svg>
+);
+const IconGitHub = ({ size=18 }) => (
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+  </svg>
+);
+const IconArrowUp = () => <span style={{fontSize:'1.1rem'}}>↑</span>;
+
+/* ── Intersection Observer hook ─────────────── */
+function useReveal(threshold = 0.12) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.unobserve(el); } }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+}
+
+/* ── Stagger reveal ─────────────────────────── */
+function useStaggerReveal(count, threshold = 0.08) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(new Array(count).fill(false));
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        obs.unobserve(el);
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => setVisible(v => { const n=[...v]; n[i]=true; return n; }), i * 75);
+        }
+      }
+    }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [count, threshold]);
+  return [ref, visible];
+}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const navItems = [
+    { href: '#about',        label: 'Hakkımda' },
+    { href: '#experience',   label: 'Deneyim' },
+    { href: '#stack',        label: 'Tech Stack' },
+    { href: '#education',    label: 'Eğitim' },
+    { href: '#certificates', label: 'Sertifikalar' },
+  ];
+
+  return (
+    <>
+      <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
+        <a href="#hero" className="nav__logo">İ<span>.</span>Bayramlı</a>
+        <ul className="nav__links">
+          {navItems.map(n => <li key={n.href}><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="#contact" className="nav__cta">İletişim</a></li>
+        </ul>
+        <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(o => !o)} aria-label="Menü">
+          <span/><span/><span/>
+        </button>
+      </nav>
+      <div className={`mobile-overlay${menuOpen ? ' open' : ''}`}>
+        {navItems.map(n => <a key={n.href} href={n.href} onClick={closeMenu}>{n.label}</a>)}
+        <a href="#contact" onClick={closeMenu}>İletişim</a>
+      </div>
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+function Hero() {
+  return (
+    <section className="hero" id="hero">
+      <div className="blob blob--1"/><div className="blob blob--2"/><div className="blob blob--3"/>
+      <div className="hero__inner">
+        <div className="hero__content">
+          <div className="hero__badge anim-1">
+            <span className="hero__badge-dot"/>
+            Şu an aktif · Atmosware × Turkcell, İstanbul
+          </div>
+          <h1 className="hero__title anim-2">
+            İbrahim<br/><span className="grad">Bayramlı</span>
+          </h1>
+          <p className="hero__sub anim-3">
+            <strong>Java Software Engineer | Backend Specialist.</strong> Kurumsal ölçekte yüksek trafikli backend sistemleri tasarlar, ölçeklenebilir mikroservis mimarileri ile dijital dönüşüm projelerinde değer üretir.
+          </p>
+          <div className="hero__btns anim-4">
+            <a href={MAILTO_URL} className="btn btn--primary">
+              <IconMail/> İletişime Geç
+            </a>
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener" className="btn btn--ghost">
+              <IconLinkedIn size={16}/> LinkedIn
+            </a>
+          </div>
+          <div className="hero__stats anim-5">
+            {[
+              { num: '4+',  label: 'Yıl Deneyim' },
+              { num: 'Java', label: 'Native Level' },
+              { num: '14',  label: 'Teknoloji' },
+            ].map(s => (
+              <div key={s.label}>
+                <div className="stat__num">{s.num}</div>
+                <div className="stat__label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="hero__photo-wrap">
+          <img src="assets/images/profile.jpeg" alt="İbrahim Bayramlı" className="hero__photo"/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════════ */
+function About() {
+  const socials = [
+    { href:'https://github.com/ibrahimbayramli', icon:<IconGitHub/>, label:'GitHub' },
+    { href:LINKEDIN_URL, icon:<IconLinkedIn/>, label:'LinkedIn' },
+    { href:MAILTO_URL, icon:<IconMail/>, label:'E-posta' },
+  ];
+  const cards = [
+    { icon:'📍', label:'Konum',    value:'İstanbul, Türkiye' },
+    { icon:'💼', label:'Şirket',   value:'Atmosware' },
+    { icon:'🏢', label:'Müşteri',  value:'Turkcell · İşTurkcell' },
+    { icon:'🚀', label:'Uzmanlık', value:'Java · Backend · Microservices' },
+  ];
+  return (
+    <section className="section section--alt" id="about">
+      <div className="inner">
+        <div className="about-grid">
+          <div className="about-text">
+            <span className="label">01 · Hakkımda</span>
+            <h2 className="heading">Sistemler inşa ederim,<br/>ölçeklenebilirlik dert edinmem.</h2>
+            <p>
+              <strong>Java Software Engineer | Backend Specialist.</strong> ~4 yıllık deneyimimle
+              yüksek erişilebilirlikli, kurumsal ölçekli backend sistemleri tasarlıyor ve işletiyorum.
+              Java &amp; Spring-based sistemlerde uzmanlaşmış bir backend geliştiricisiyim.
+            </p>
+            <p>
+              Şu anda <strong>Atmosware</strong> bünyesinde <strong>Turkcell</strong>'in İşTurkcell
+              kurumsal dijital kanalları (Web, iOS, Android) için backend servisleri geliştiriyorum.
+              Karmaşık iş süreçlerinin dijitalleştirilmesi, ölçeklenebilir mimari tasarımı ve
+              on binlerce kurumsal kullanıcıya hizmet eden yüksek performanslı sistemler inşa ediyorum.
+            </p>
+            <p>
+              Güvenilir backend sistemleri kurarak kurumsal ortamlarda ölçülebilir değer üretmekten
+              keyif alıyorum.
+            </p>
+            <div className="socials">
+              {socials.map(s => (
+                <a key={s.label} href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined}
+                   rel="noopener" className="social-btn" aria-label={s.label}>
+                  {s.icon}
+                </a>
+              ))}
             </div>
-            <div class="author-content">
-              <h4>İbrahim BAYRAMLI</h4>
-              <span>Jr. Java Spring Developer</span>
-            </div>
-            <nav class="main-nav" role="navigation">
-              <ul class="main-menu">
-                <li><a href="#section1">Hakkımda</a></li>
-                <li><a href="#section2">Yeteneklerim</a></li>
-                
-                <li><a href="#section4">İletişim</a></li>
-              </ul>
-            </nav>
-            <div class="social-network">
-              <ul class="soial-icons">
-                <li>
-                  <a href="https://www.facebook.com/ibrahim.bayramli/"><i class="fa fa-facebook"></i></a>
-                </li>
-                <li>
-                  <a href="https://twitter.com/i_bayramli"><i class="fa fa-twitter"></i></a>
-                </li>
-                <li>
-                  <a href="https://www.instagram.com/ibrahimbayramli/"><i class="fa fa-instagram"></i></a>
-                </li>
-                <li>
-                  <a href="https://www.linkedin.com/in/ibrahimbayramli/"><i class="fa fa-linkedin"></i></a>
-                </li>
-                <li>
-                  <a href="https://github.com/ibrahimbayramli"><i class="fa fa-github"></i></a>
-                </li>
-                
-              </ul>
-            </div>
-            
+          </div>
+          <div className="info-grid">
+            {cards.map(c => (
+              <div className="info-card" key={c.label}>
+                <div className="info-card__icon">{c.icon}</div>
+                <div className="info-card__label">{c.label}</div>
+                <div className="info-card__value">{c.value}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+    </section>
+  );
+}
 
-      <section class="section about-me" data-section="section1">
-        <div class="container">
-        <div class="top-header">
-        	<img src="assets/images/title-image.png" alt="aerobic girls" />
-        </div>
-          <div class="section-heading">
-          
-            <h2>Hakkımda</h2>
-            <div class="line-dec"></div>
-            <span>Merhaba, ben İbrahim. Mayıs 2022 tarihinden itibaren Atmosware şirketinde Jr. Java Spring Developer olarak çalışmaktayım.</span>
-          </div>
-          <div class="right-image-post">
-            <div class="row">
- 
-              <div class="col-md-8">
-                <div class="left-text">
-                  <h4>Keyifli Seyahatler!</h4>
-                  <p>Yeni yerler keşfetmekten hoşlanırım. Yeni yerler görüp yeni kültürlerle tanışmak ilgimi fazlasıyla çekmektedir. Her fırsatta seyahatler planlayarım.</p>
-                  <p>
-                    Özellikle doğal güzelliği olen bölgelerde gezinmek ilgimi çeker.
-                  </p>
-                  <p>
-                    
-                  </p>
-                  
+/* ══════════════════════════════════════════════
+   EXPERIENCE
+══════════════════════════════════════════════ */
+function Experience() {
+  const [ref, visible] = useReveal(0.1);
+  const bullets = [
+    'Turkcell İşTurkcell kurumsal dijital kanalları (Web, iOS, Android) için on binlerce kurumsal kullanıcıya hizmet eden yüksek trafikli Java / Spring Boot mikroservisleri geliştiriyorum.',
+    'Karmaşık kurumsal iş süreçlerini tamamen dijital süreçlere dönüştürme projelerinde aktif rol alarak ölçeklenebilir ve bakımı kolay API\'lar tasarlıyorum.',
+    'Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini iyileştiriyorum.',
+    'Sorgu optimizasyonu, indeksleme, önbellekleme ve verimli veri modelleme ile veritabanı performansını artırıyorum. (PostgreSQL, PL/SQL, MongoDB)',
+    'Yüksek hacimli gerçek zamanlı işleme için Kafka, RabbitMQ ve Redis kullanan olay güdümlü dağıtık sistemler kuruyorum.',
+    'Jenkins, Maven, Gradle ve OpenShift ile CI/CD pipeline\'ları uygulayarak konteyner tabanlı dağıtımları yönetiyorum.',
+    'Spring Security, OAuth2, JWT ve SSO tabanlı kimlik doğrulama & yetkilendirme mekanizmalarını entegre ediyorum.',
+    'Java, .NET/C#, Python ve Go servisleri arasında hibrit sistem entegrasyonlarına liderlik ediyor; çapraz platform iletişimini sağlıyorum.',
+  ];
+  return (
+    <section className="section" id="experience">
+      <div className="inner">
+        <span className="label">02 · Deneyim</span>
+        <h2 className="heading">İş Deneyimi</h2>
+        <p className="desc">Yüksek trafikli, kurumsal ölçekli üretim sistemlerinde aktif olarak çalışıyorum.</p>
+        <div className="timeline">
+          <div ref={ref} className={`tl-item${visible ? ' show' : ''}`}>
+            <div className="tl-dot"/>
+            <div className="tl-meta">Mayıs 2022 – Devam Ediyor · İstanbul, Türkiye</div>
+            <div className="tl-company">Atmosware</div>
+            <div className="tl-role">Software Engineer &nbsp;·&nbsp; <span style={{color:'var(--accent2)'}}>Turkcell / İşTurkcell</span></div>
+            <div className="tl-card">
+              <ul className="tl-list">
+                {bullets.map((b, i) => <li key={i}>{b}</li>)}
+              </ul>
+              <div style={{marginTop:'1.4rem', paddingTop:'1.2rem', borderTop:'1px solid var(--border)'}}>
+                <div style={{fontSize:'0.72rem', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace", marginBottom:'0.8rem'}}>Ölçülebilir Etki</div>
+                <div style={{display:'flex', flexDirection:'column', gap:'0.5rem'}}>
+                  {[
+                    '🏢  On binlerce kurumsal kullanıcıya hizmet eden birden fazla dijital kanalın backend sistemlerine katkıda bulundum.',
+                    '⚡  Performans tuning ve refactoring çalışmalarıyla servis yanıt sürelerini ve sistem stabilitesini ölçülebilir biçimde iyileştirdim.',
+                    '🔄  Manuel kurumsal iş akışlarının tamamen dijital süreçlere dönüştürülmesinde aktif rol aldım.',
+                  ].map((item, i) => (
+                    <div key={i} style={{fontSize:'0.87rem', color:'var(--muted)', lineHeight:1.65}}>{item}</div>
+                  ))}
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="right-image">
-                  <img src="assets/images/mountain-reflection.jpg" alt="Mountain Reflection" />
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          <div class="left-image-post">
-            <div class="row">
-            
-              <div class="col-md-4">
-                <div class="left-image">
-                  <img src="assets/images/software.png" alt="Nature Girl" />
-                </div>
-              </div>
-              
-              <div class="col-md-8">
-                <div class="right-text">
-                  <h4>Kod Yazarken Eğlenmek</h4>
-                  <p>Henüz yeni sayılabilirim bu alanda. Ancak kod yazarken çok fazla keyif alıyorum. </p>
-                  
-                  
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section my-services" data-section="section2">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Yeteneklerim</h2>
-            <div class="line-dec"></div>
-            
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="service-item">
-                <i class="fa fa-area-chart"></i>
-                <h4>Temiz Kod Yazmak</h4>
-                <p>Yazdığım kodlarda özellikle temiz ve okunaklı kod yazmaya özen gösteririm.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="service-item">
-                <i class="fa fa-check-square-o"></i>
-                <h4>Güvenli Kod Yazmak</h4>
-                <p>Kod yazarken kullanıcı deneyimini de göz önünde bulundurarak güvenli kod yazmaya özen gösteririm.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="service-item">
-                <i class="fa fa-question-circle"></i>
-                <h4>İhtiyaca Uygun Kod Yazmak</h4>
-                <p>Kullanıcının ihtiyaç ve beklentilerini dikkate alarak ihtiyaçlar doğrultusunda geliştirmeler yaparım.</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="service-item">
-                <i class="fa fa-support"></i>
-                <h4>Sürdürülebilir Kod Yazmak</h4>
-                <p>Yazdığım kodlarda ileride doğabilecek bakım çalışmalarında maliyeti düşürmek ve zaman kazanmak için sürdürülebilir kod yazmaktayım.</p>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <!--  -->
+/* ══════════════════════════════════════════════
+   TECH STACK
+══════════════════════════════════════════════ */
+const DI = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
+const SI = 'https://cdn.simpleicons.org';
 
-      <section class="section contact-me" data-section="section4">
-        <div class="container">
-          <div class="section-heading">
-            <h2>İletişim</h2>
-            <div class="line-dec"></div>
-            <span>Benimle iletişime geçmek istiyorsan formu doldur. </span>
-          </div>
-          <div class="row">
-            <div class="right-content">
-              <div class="container">
-                <form id="contact" action="" method="post">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <fieldset>
-                        <input name="name" type="text" class="form-control"
-                          id="name" placeholder="İsim" required="" />
-                      </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                      <fieldset>
-                        <input name="email" type="text" class="form-control"
-                          id="email" placeholder="E-Posta" required=""  />
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-                      <fieldset>
-                        <input name="subject" type="text" class="form-control" 
-                          id="subject" placeholder="Konu" required="" />
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-                      <fieldset>
-                        <textarea name="message" rows="6" class="form-control"
-                          id="message" placeholder="İletmek istediğin mesajın..." required="" ></textarea>
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-                      <fieldset>
-                        <button type="submit" id="form-submit" class="button">
-                          Mesjını Gönder
-                        </button>
-                      </fieldset>
-                    </div>
-                  </div>
-                </form>
+function TechStack() {
+  const techs = [
+    { logo:`${DI}/java/java-original.svg`,                         name:'Java',            level:'native',       lbl:'Native' },
+    { logo:`${DI}/spring/spring-original.svg`,                     name:'Spring Boot',     level:'native',       lbl:'Native' },
+    { logo:`${DI}/go/go-original.svg`,                             name:'Go',              level:'professional', lbl:'Professional' },
+    { logo:`${DI}/python/python-original.svg`,                     name:'Python',          level:'professional', lbl:'Professional' },
+    { logo:`${DI}/postgresql/postgresql-original.svg`,             name:'PostgreSQL',      level:'professional', lbl:'Professional' },
+    { logo:`${DI}/mongodb/mongodb-original.svg`,                   name:'MongoDB',         level:'professional', lbl:'Professional' },
+    { logo:`${SI}/apachekafka/ffffff`,                             name:'Kafka',           level:'professional', lbl:'Professional' },
+    { logo:`${DI}/rabbitmq/rabbitmq-original.svg`,                 name:'RabbitMQ',        level:'professional', lbl:'Professional' },
+    { logo:`${DI}/redis/redis-original.svg`,                       name:'Redis',           level:'professional', lbl:'Professional' },
+    { logo:`${DI}/spring/spring-original.svg`,                     name:'Spring Security', level:'professional', lbl:'Professional', badge:'🔒' },
+    { logo:`${SI}/jsonwebtokens/F7B500`,                           name:'OAuth2 / JWT',    level:'professional', lbl:'Professional' },
+    { logo:`${DI}/openshift/openshift-original.svg`,               name:'OpenShift',       level:'professional', lbl:'Professional' },
+    { logo:`${DI}/jenkins/jenkins-original.svg`,                   name:'Jenkins',         level:'professional', lbl:'Professional' },
+    { logo:`${DI}/maven/maven-original.svg`,                       name:'Maven / Gradle',  level:'professional', lbl:'Professional' },
+  ];
+  const [ref, visible] = useStaggerReveal(techs.length);
+  return (
+    <section className="section section--alt" id="stack">
+      <div className="inner">
+        <span className="label">03 · Teknolojiler</span>
+        <h2 className="heading">Tech Stack</h2>
+        <p className="desc">Üretim ortamlarında aktif olarak kullandığım diller, framework'ler ve araçlar.</p>
+        <div className="tech-grid" ref={ref}>
+          {techs.map((t, i) => (
+            <div key={t.name} className={`tech-card${visible[i] ? ' show' : ''}`}>
+              <div style={{position:'relative', width:44, height:44, margin:'0 auto 0.55rem'}}>
+                <img src={t.logo} alt={t.name} className="tech-card__logo" style={{width:'100%',height:'100%'}} />
+                {t.badge && <span style={{position:'absolute',bottom:-4,right:-6,fontSize:'0.75rem'}}>{t.badge}</span>}
               </div>
+              <div className="tech-card__name">{t.name}</div>
+              <div className={`tech-card__level ${t.level}`}>{t.lbl}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   STRENGTHS
+══════════════════════════════════════════════ */
+function Strengths() {
+  const items = [
+    { icon:'☕', title:'Java & Spring Boot Backend Geliştirme' },
+    { icon:'🏗️', title:'Ölçeklenebilir Mikroservis Mimarisi' },
+    { icon:'🔄', title:'Software Development Lifecycle' },
+    { icon:'📡', title:'API Tasarımı (Web & Mobile)' },
+    { icon:'⚡', title:'Performans Optimizasyonu & Troubleshooting' },
+    { icon:'✨', title:'Temiz Kod & Sürdürülebilir Sistem Tasarımı' },
+    { icon:'🛡️', title:'Güvenilirlik & Dayanıklılık Mühendisliği' },
+    { icon:'📈', title:'Sürekli Öğrenme & Dijital Dönüşüm' },
+  ];
+  const [ref, visible] = useStaggerReveal(items.length, 0.06);
+  return (
+    <section className="section" id="strengths">
+      <div className="inner">
+        <span className="label">04 · Güçlü Yönler</span>
+        <h2 className="heading">Temel Yetkinlikler</h2>
+        <p className="desc">Teknik bilginin ötesinde öne çıkan özelliklerim.</p>
+        <div className="str-grid" ref={ref}>
+          {items.map((s, i) => (
+            <div key={s.title} className={`str-card${visible[i] ? ' show' : ''}`}>
+              <span className="str-card__icon">{s.icon}</span>
+              <div className="str-card__title">{s.title}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   EDUCATION
+══════════════════════════════════════════════ */
+function Education() {
+  const [ref, visible] = useStaggerReveal(2);
+  const edu = [
+    {
+      badge: 'Lisans',
+      degree: 'İnşaat Mühendisliği',
+      school: 'Bartın Üniversitesi',
+      date: 'Eylül 2016 – Temmuz 2021 · Bartın, Türkiye',
+      desc: null,
+    },
+    {
+      badge: 'Sertifika',
+      degree: 'Oyun Programlama',
+      school: 'Üsküdar Üniversitesi',
+      date: 'Mart 2022 – Mayıs 2022 · İstanbul, Türkiye',
+      desc: 'Unity ve C# odaklı uygulamalı eğitim; oyun motoru temelleri, nesne yönelimli programlama ve gerçek zamanlı etkileşimli uygulama geliştirme.',
+    },
+  ];
+  return (
+    <section className="section section--alt" id="education">
+      <div className="inner">
+        <span className="label">05 · Eğitim</span>
+        <h2 className="heading">Eğitim Geçmişi</h2>
+        <div className="edu-grid" ref={ref}>
+          {edu.map((e, i) => (
+            <div key={e.degree} className={`edu-card${visible[i] ? ' show' : ''}`}>
+              <span className="edu-badge">{e.badge}</span>
+              <div className="edu-degree">{e.degree}</div>
+              <div className="edu-school">{e.school}</div>
+              <div className="edu-date">{e.date}</div>
+              {e.desc && <div className="edu-desc">{e.desc}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   CERTIFICATES
+══════════════════════════════════════════════ */
+function Certificates() {
+  const issuers = {
+    'HackerRank':    { color:'#2ec866', abbr:'HR' },
+    'BTK Akademi':   { color:'#1a4f8a', abbr:'BTK' },
+    'Patika.dev':    { color:'#f97316', abbr:'PA' },
+    'Coderspace':    { color:'#7c3aed', abbr:'CS' },
+    'Go Company':    { color:'#00ADD8', abbr:'GO' },
+    'UNX':           { color:'#dc2626', abbr:'UNX' },
+    'Global AI Hub': { color:'#0ea5e9', abbr:'AI' },
+    'Bartın':        { color:'#475569', abbr:'BÜ' },
+  };
+  const certs = [
+    { name:'Yapay Zeka ile Üretkenlik Akademisi', issuer:'Coderspace',    date:'Mar 2026',  skills:['Prompt Engineering','Yapay Zeka'] },
+    { name:'Software Engineer Certificate',       issuer:'HackerRank',   date:'Şub 2025',  skills:[] },
+    { name:'React',                               issuer:'HackerRank',   date:'Haz 2023',  skills:['React.js','JavaScript'] },
+    { name:'DevOps Çözümleri (Jenkins)',          issuer:'BTK Akademi',  date:'Eki 2022',  skills:['DevOps','Jenkins'] },
+    { name:'İleri Seviye Java',                   issuer:'BTK Akademi',  date:'Eki 2022',  skills:['Java','Spring Framework'] },
+    { name:'Atmosware Java Bootcamp',             issuer:'Patika.dev',   date:'Ağu 2022',  skills:['Java','Spring Framework'] },
+    { name:'JAVA İle Programlamaya Giriş',        issuer:'BTK Akademi',  date:'Ağu 2022',  skills:['Java','Spring Framework'] },
+    { name:'SQL (Basic)',                         issuer:'HackerRank',   date:'Tem 2022',  skills:['PL/SQL','SQL'] },
+    { name:'Backend Web Dev Path with Beginner Java', issuer:'Patika.dev', date:'Haz 2022', skills:['Java','Spring Framework'] },
+    { name:'Java (Basic)',                        issuer:'HackerRank',   date:'Haz 2022',  skills:['Java','Spring Framework'] },
+    { name:'Future Of Data',                      issuer:'Go Company',   date:'Mar 2022',  skills:[] },
+    { name:'Introduction to Pardus OS',           issuer:'UNX',          date:'Şub 2022',  skills:[] },
+    { name:'GO (Basic)',                          issuer:'HackerRank',   date:'Oca 2022',  skills:['Go'] },
+    { name:'Temel Python Eğitimi',                issuer:'Global AI Hub',date:'Ara 2020',  skills:['Python'] },
+    { name:'Matlab',                              issuer:'Bartın',       date:'Nis 2019',  skills:[] },
+  ];
+  const [ref, visible] = useStaggerReveal(certs.length);
+
+  const getIssuerStyle = (issuer) => {
+    const key = Object.keys(issuers).find(k => issuer.includes(k)) || 'Bartın';
+    return issuers[key] || issuers['Bartın'];
+  };
+
+  return (
+    <section className="section" id="certificates">
+      <div className="inner">
+        <span className="label">06 · Sertifikalar</span>
+        <h2 className="heading">Lisanslar &amp; Sertifikalar</h2>
+        <p className="desc">HackerRank, BTK Akademi, Patika.dev ve diğer platformlardan alınan sertifikalar.</p>
+        <div className="cert-grid" ref={ref}>
+          {certs.map((c, i) => {
+            const style = getIssuerStyle(c.issuer);
+            return (
+              <div key={c.name} className={`cert-card${visible[i] ? ' show' : ''}`}>
+                <div className="cert-issuer-dot" style={{background: style.color}}>{style.abbr}</div>
+                <div className="cert-body">
+                  <div className="cert-name">{c.name}</div>
+                  <div className="cert-issuer">{c.issuer}</div>
+                  <div className="cert-date">{c.date}</div>
+                  {c.skills.length > 0 && (
+                    <div className="cert-skills">
+                      {c.skills.map(s => <span key={s} className="cert-skill">{s}</span>)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════════ */
+function Contact() {
+  const links = [
+    { href:LINKEDIN_URL,                         icon:<IconLinkedIn size={14}/>, text:'linkedin.com/in/ibrahimbayramli' },
+    { href:'https://github.com/ibrahimbayramli', icon:<IconGitHub size={14}/>,   text:'github.com/ibrahimbayramli' },
+  ];
+  return (
+    <section className="section" id="contact">
+      <div className="inner">
+        <div className="contact-wrap">
+          <div className="contact-box">
+            <span className="label" style={{justifyContent:'center',display:'flex',marginBottom:'0.9rem'}}>07 · İletişim</span>
+            <h3>Birlikte çalışalım!</h3>
+            <p>Projeleriniz, iş birliği teklifleri veya sadece selamlaşmak için yazmaktan çekinmeyin.</p>
+            <a href={MAILTO_URL} className="btn btn--primary" style={{margin:'0 auto'}}>
+              <IconMail/> ibrahimbayramli@outlook.com
+            </a>
+            <div className="contact-links">
+              {links.map(l => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="contact-link">
+                  {l.icon} {l.text}
+                </a>
+              ))}
             </div>
           </div>
         </div>
-      </section>
-    </div>
-    <!-- Scripts -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      </div>
+    </section>
+  );
+}
 
-    <script src="assets/js/isotope.min.js"></script>
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/lightbox.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script>
-      //according to loftblog tut
-      $(".main-menu li:first").addClass("active");
+/* ══════════════════════════════════════════════
+   BACK TO TOP
+══════════════════════════════════════════════ */
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const h = () => setShow(window.scrollY > 400);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <button
+      className={`back-top${show ? ' show' : ''}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      aria-label="Başa dön"
+    >
+      <IconArrowUp/>
+    </button>
+  );
+}
 
-      var showSection = function showSection(section, isAnimate) {
-        var direction = section.replace(/#/, ""),
-          reqSection = $(".section").filter(
-            '[data-section="' + direction + '"]'
-          ),
-          reqSectionPos = reqSection.offset().top - 0;
+/* ══════════════════════════════════════════════
+   APP
+══════════════════════════════════════════════ */
+function App() {
+  return (
+    <>
+      <Navbar/>
+      <Hero/>
+      <About/>
+      <Experience/>
+      <TechStack/>
+      <Strengths/>
+      <Education/>
+      <Certificates/>
+      <Contact/>
+      <footer className="footer">
+        <p>© 2025 İbrahim Bayramlı · İstanbul — Built with React</p>
+      </footer>
+      <BackToTop/>
+    </>
+  );
+}
 
-        if (isAnimate) {
-          $("body, html").animate(
-            {
-              scrollTop: reqSectionPos
-            },
-            800
-          );
-        } else {
-          $("body, html").scrollTop(reqSectionPos);
-        }
-      };
-
-      var checkSection = function checkSection() {
-        $(".section").each(function() {
-          var $this = $(this),
-            topEdge = $this.offset().top - 80,
-            bottomEdge = topEdge + $this.height(),
-            wScroll = $(window).scrollTop();
-          if (topEdge < wScroll && bottomEdge > wScroll) {
-            var currentId = $this.data("section"),
-              reqLink = $("a").filter("[href*=\\#" + currentId + "]");
-            reqLink
-              .closest("li")
-              .addClass("active")
-              .siblings()
-              .removeClass("active");
-          }
-        });
-      };
-
-      $(".main-menu").on("click", "a", function(e) {
-        e.preventDefault();
-        showSection($(this).attr("href"), true);
-      });
-
-      $(window).scroll(function() {
-        checkSection();
-      });
-    </script>
-  </body>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
+</script>
+</body>
 </html>
