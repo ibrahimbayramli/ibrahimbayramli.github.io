@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["D:\\ibrahimbayramli.github.io\\.claude\\worktrees\\confident-diffie\\.claude\\serve.py", "9090"],
+      "port": 9090,
+      "autoPort": false
+    }
+  ]
+}
