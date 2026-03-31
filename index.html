@@ -89,7 +89,7 @@
       backdrop-filter: blur(22px);
       border-bottom-color: var(--border);
     }
-    .nav__logo { font-size: 1.05rem; font-weight: 800; color: var(--white); text-decoration: none; letter-spacing: -0.5px; }
+    .nav__logo { font-size: 1.05rem; font-weight: 800; color: var(--white); text-decoration: none; letter-spacing: -0.5px; font-family: monospace; }
     .nav__logo span { color: var(--accent); }
     .nav__links { display: flex; gap: 2.2rem; list-style: none; }
     .nav__links a { color: var(--muted); text-decoration: none; font-size: 0.87rem; font-weight: 500; transition: color 0.2s; }
@@ -584,7 +584,7 @@ function Navbar({ theme, toggleTheme }) {
     <>
       <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
         <a href="/" onClick={e => { e.preventDefault(); navigate('hero'); }} className="nav__logo">
-          İ<span>.</span>Bayramlı
+          <span>{'{'}</span>Anasayfa<span>{'}'}</span>
         </a>
         <ul className="nav__links">
           {navItems.map(n => (
@@ -803,7 +803,7 @@ function TechStack() {
     { logo:`${DI}/redis/redis-original.svg`,                       name:'Redis',           level:'professional', lbl:'Professional' },
     { logo:`${DI}/spring/spring-original.svg`,                     name:'Spring Security', level:'professional', lbl:'Professional', badge:'🔒' },
     { logo:`${SI}/jsonwebtokens/F7B500`,                           name:'OAuth2 / JWT',    level:'professional', lbl:'Professional' },
-    { logo:`${DI}/openshift/openshift-original.svg`,               name:'OpenShift',       level:'professional', lbl:'Professional' },
+    { logo:`${SI}/redhatopenshift/EE0000`,                         name:'OpenShift',       level:'professional', lbl:'Professional' },
     { logo:`${DI}/jenkins/jenkins-original.svg`,                   name:'Jenkins',         level:'professional', lbl:'Professional' },
     { logo:`${DI}/maven/maven-original.svg`,                       name:'Maven / Gradle',  level:'professional', lbl:'Professional' },
   ];
