@@ -689,11 +689,17 @@ function About() {
     { href:LINKEDIN_URL, icon:<IconLinkedIn/>, label:'LinkedIn' },
     { href:MAILTO_URL, icon:<IconMail/>, label:'E-posta' },
   ];
+  const enLevel = (() => {
+    const langs = navigator.languages || [navigator.language];
+    const hasEn = langs.some(l => l.toLowerCase().startsWith('en'));
+    return hasEn ? 'Akıcı' : 'Profesyonel';
+  })();
   const cards = [
     { icon:'📍', label:'Konum',    value:'İstanbul, Türkiye' },
     { icon:'💼', label:'Şirket',   value:'Atmosware' },
     { icon:'🏢', label:'Müşteri',  value:'Turkcell · İşTurkcell' },
     { icon:'🚀', label:'Uzmanlık', value:'Java · Backend · Microservices' },
+    { icon:'🌐', label:'Diller',   value:`Türkçe (Anadil) · İngilizce (${enLevel})` },
   ];
   return (
     <section className="section section--alt" id="about">
@@ -703,7 +709,7 @@ function About() {
             <span className="label">01 · Hakkımda</span>
             <h2 className="heading">Sistemler inşa ederim,<br/>ölçeklenebilirlik dert edinmem.</h2>
             <p>
-              <strong>Java Software Engineer | Backend Specialist.</strong> ~4 yıllık deneyimimle
+              <strong>Java Software Engineer | Backend Specialist.</strong> 4 yıllık deneyimimle
               yüksek erişilebilirlikli, kurumsal ölçekli backend sistemleri tasarlıyor ve işletiyorum.
               Java &amp; Spring-based sistemlerde uzmanlaşmış bir backend geliştiricisiyim.
             </p>
