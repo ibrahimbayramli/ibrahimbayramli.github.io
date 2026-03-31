@@ -94,11 +94,13 @@
     .nav__links { display: flex; gap: 2.2rem; list-style: none; }
     .nav__links a { color: var(--muted); text-decoration: none; font-size: 0.87rem; font-weight: 500; transition: color 0.2s; }
     .nav__links a:hover { color: var(--white); }
+    .nav__links a.nav__active { color: var(--accent); }
     .nav__cta {
-      background: var(--accent) !important; color: var(--white) !important;
-      padding: 7px 20px; border-radius: 9px; font-weight: 600 !important;
+      background: transparent !important; color: var(--accent) !important;
+      border: 1.5px solid var(--accent); border-radius: 8px; padding: 5px 16px;
+      font-weight: 600 !important; transition: background 0.2s, color 0.2s;
     }
-    .nav__cta:hover { background: #3b7ef0 !important; }
+    .nav__cta:hover, .nav__cta.nav__active { background: var(--accent) !important; color: var(--white) !important; }
     .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
     .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s var(--ease); }
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -549,9 +551,24 @@ function useStaggerReveal(count, threshold = 0.08) {
 function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeId, setActiveId] = useState('hero');
 
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 40);
+    let ticking = false;
+    const h = () => {
+      setScrolled(window.scrollY > 40);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        let current = 'hero';
+        for (const id of Object.keys(ROUTES)) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= 120) current = id;
+        }
+        setActiveId(current);
+        ticking = false;
+      });
+    };
     window.addEventListener('scroll', h, { passive: true });
     return () => window.removeEventListener('scroll', h);
   }, []);
@@ -578,13 +595,13 @@ function Navbar({ theme, toggleTheme }) {
         <ul className="nav__links">
           {navItems.map(n => (
             <li key={n.id}>
-              <a href={ROUTES[n.id]} onClick={e => { e.preventDefault(); navigate(n.id); }}>
+              <a href={ROUTES[n.id]} onClick={e => { e.preventDefault(); navigate(n.id); }} className={activeId === n.id ? 'nav__active' : ''}>
                 {n.label}
               </a>
             </li>
           ))}
           <li>
-            <a href={ROUTES.contact} onClick={e => { e.preventDefault(); navigate('contact'); }} className="nav__cta">
+            <a href={ROUTES.contact} onClick={e => { e.preventDefault(); navigate('contact'); }} className={`nav__cta${activeId === 'contact' ? ' nav__active' : ''}`}>
               İletişim
             </a>
           </li>
